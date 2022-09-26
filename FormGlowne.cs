@@ -2,6 +2,9 @@
 using System;
 using System.Windows.Forms;
 using Syncfusion.Windows.Forms.PdfViewer;
+using System.IO;
+using System.Linq;
+using static DowodyZmian.ZmienneGlobalne;
 
 namespace DowodyZmian
 {
@@ -48,8 +51,9 @@ namespace DowodyZmian
         {
             Text = "Dowody zmian";
 
-            groupBoxView.Text = "Podgląd pliku PDF";
-            groupBoxList.Text = "Lista wczytanych plików";
+            GroupBoxView.Text = "Podgląd pliku PDF";
+            GroupBoxList.Text = "Lista wczytanych plików";
+            GroupBoxPrzyciski.Text = "Operacje do wykonania";
 
             
             PdfOknoPodlgadu.ZoomMode = ZoomMode.FitPage;
@@ -59,11 +63,184 @@ namespace DowodyZmian
             PdfOknoPodlgadu.ToolbarSettings.PrintButton.IsVisible = false;
 
             PdfOknoPodlgadu.Load("gisnet.pdf");
+
+            ListBoxPliki.Focus();
         }
 
         private void FormG_FormClosing(object sender, FormClosingEventArgs e)
         {
             PdfOknoPodlgadu.Dispose();
+        }
+
+        private void TextBoxZmiana_TextChanged(object sender, EventArgs e)
+        {
+            NumerAktualnejZmiany = TextBoxZmiana.Text;
+        }
+
+        private void ButtonPliki_Click(object sender, EventArgs e)
+        {
+            string[] wczytanePliki = { };
+
+            switch (((Button)sender).Name)
+            {
+                case "ButtonWybierzFolder":
+
+                    FolderBrowserDialog fbdOpen = new FolderBrowserDialog
+                    {
+                        ShowNewFolderButton = false,
+                        SelectedPath = OstatniFolder,
+                    };
+
+                    if (fbdOpen.ShowDialog() == DialogResult.OK)
+                    {
+                        wczytanePliki = Directory.GetFiles(fbdOpen.SelectedPath, "*.pdf",SearchOption.TopDirectoryOnly);
+
+                        OstatniFolder = fbdOpen.SelectedPath;
+
+                        Array.Sort(wczytanePliki, new NaturalStringComparer());
+                    }
+                    else
+                    {
+                        return;
+                    }
+
+                    break;
+
+                case "ButtonWskazPliki":
+
+                    OpenFileDialog ofDialog = new OpenFileDialog
+                    {
+                        Filter = @"Dokumenty (*.pdf)|*.pdf",
+                        Multiselect = true,
+                        InitialDirectory = OstatniFolder 
+                    };
+
+                    if (ofDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        wczytanePliki = ofDialog.FileNames;
+
+                        OstatniFolder = Path.GetDirectoryName(wczytanePliki[0]); 
+
+                        Array.Sort(wczytanePliki, new NaturalStringComparer()); 
+                    } 
+                    else
+                    {
+                        return;
+                    }
+
+                    break;
+            }
+
+            ListaWczytanychPlikow.Clear();
+            ListBoxPliki.Items.Clear();
+
+            if (wczytanePliki.Length ==0)
+            {
+                return;
+            }
+
+            for (int index = 0; index < wczytanePliki.Length; index++)
+            {
+                string wczytanyPlik = wczytanePliki[index];
+
+                Plik plik = new Plik(wczytanyPlik);
+
+                ListaWczytanychPlikow.Add(index, plik);
+
+                ListBoxPliki.Items.Add(plik.NazwaPliku);
+            }
+
+            ListBoxPliki.SetSelected(0, true); 
+            
+        }
+
+        private void ListBoxPliki_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ListBoxPliki.Items.Count > 0)
+            {
+                Plik aktualnyPlik = ListaWczytanychPlikow[ListBoxPliki.SelectedIndex];
+
+                PdfOknoPodlgadu.Load(aktualnyPlik.PelnaSciezka);
+
+                if (!string.IsNullOrEmpty(NumerAktualnejZmiany) && string.IsNullOrEmpty(aktualnyPlik.NowaNazwaPliku))
+                {
+                    aktualnyPlik.NowaNazwaPliku = NumerAktualnejZmiany + "_" + aktualnyPlik.NazwaPliku;
+
+                    ListBoxPliki.SelectedIndexChanged -= ListBoxPliki_SelectedIndexChanged;
+                    ListBoxPliki.Items[ListBoxPliki.SelectedIndex] = aktualnyPlik.NazwaPliku + " => " + aktualnyPlik.NowaNazwaPliku;
+                    ListBoxPliki.SelectedIndexChanged += ListBoxPliki_SelectedIndexChanged;
+                }
+            }
+        }
+
+        private void PdfOknoPodlgadu_DocumentLoaded(object sender, EventArgs args)
+        {
+            ListBoxPliki.Focus();
+        }
+
+        private void ListBoxPliki_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F2 || e.KeyCode == Keys.Enter)
+            {
+                TextBoxZmiana.SelectAll();
+                TextBoxZmiana.Focus();
+            }
+        }
+
+        private void TextBoxZmiana_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (!string.IsNullOrEmpty(TextBoxZmiana.Text))
+                {
+                    NumerAktualnejZmiany = TextBoxZmiana.Text;
+
+                    if (ListaWczytanychPlikow.Count == 0) return;
+
+                    Plik aktualnyPlik = ListaWczytanychPlikow[ListBoxPliki.SelectedIndex];
+
+                    aktualnyPlik.NowaNazwaPliku = NumerAktualnejZmiany + "_" + aktualnyPlik.NazwaPliku;
+
+                    ListBoxPliki.SelectedIndexChanged -= ListBoxPliki_SelectedIndexChanged;
+                    ListBoxPliki.Items[ListBoxPliki.SelectedIndex] = aktualnyPlik.NazwaPliku + " => " + aktualnyPlik.NowaNazwaPliku;
+                    ListBoxPliki.SelectedIndexChanged += ListBoxPliki_SelectedIndexChanged;
+                }
+
+                ListBoxPliki.Focus();
+            }
+        }
+
+        private void ButtonKonwersja_Click(object sender, EventArgs e)
+        {
+            bool czyBrakNowejNazwy = ListaWczytanychPlikow.Values.Any(plik => string.IsNullOrEmpty(plik.NowaNazwaPliku));
+
+            if (czyBrakNowejNazwy)
+            {
+                MessageBox.Show("Nie wszystkie pliki mają nowe nazwy!", "Błąd!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                ListBoxPliki.Items.Clear();
+
+                foreach (Plik plik in ListaWczytanychPlikow.Values)
+                {
+                    string katalog = Path.GetDirectoryName(plik.PelnaSciezka);
+                
+                    File.Move(plik.PelnaSciezka, Path.Combine(katalog ?? throw new InvalidOperationException(), plik.NowaNazwaPliku));
+
+                    plik.PelnaSciezka = Path.Combine(katalog, plik.NowaNazwaPliku);
+                    plik.NazwaPliku = plik.NowaNazwaPliku;
+                    plik.NowaNazwaPliku = string.Empty;
+
+                    ListBoxPliki.Items.Add(plik.NazwaPliku);
+                }
+
+                TextBoxZmiana.Text = string.Empty;
+
+                ListBoxPliki.SetSelected(0, true); 
+
+                MessageBox.Show("Koniec!", "Zmiana nazw plików", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }
