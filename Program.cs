@@ -16,7 +16,7 @@ namespace DowodyZmian
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormG());
+            Application.Run(new FormGlowne());
         }
     }
 }

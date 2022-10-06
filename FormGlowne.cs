@@ -8,11 +8,19 @@ using static DowodyZmian.ZmienneGlobalne;
 
 namespace DowodyZmian
 {
-    public partial class FormG : Form
+    public partial class FormGlowne : Form
     {
-        public FormG()
+        public FormGlowne()
         {
             InitializeComponent();
+
+            //Add below codes in Form constructor for avoid form flickering.
+ 
+            int style = NativeWinAPI.GetWindowLong(this.Handle, NativeWinAPI.GWL_EXSTYLE); 
+ 
+            style |= NativeWinAPI.WS_EX_COMPOSITED; 
+ 
+            NativeWinAPI.SetWindowLong(this.Handle, NativeWinAPI.GWL_EXSTYLE, style); 
         }
 
         private void FormGlowne_Shown(object sender, EventArgs e)
@@ -55,12 +63,11 @@ namespace DowodyZmian
             GroupBoxList.Text = "Lista wczytanych plików";
             GroupBoxPrzyciski.Text = "Operacje do wykonania";
 
-            
-            PdfOknoPodlgadu.ZoomMode = ZoomMode.FitPage;
-
             PdfOknoPodlgadu.ToolbarSettings.OpenButton.IsVisible = false;
             PdfOknoPodlgadu.ToolbarSettings.SaveButton.IsVisible = false;
             PdfOknoPodlgadu.ToolbarSettings.PrintButton.IsVisible = false;
+
+            PdfOknoPodlgadu.RenderingEngine = PdfRenderingEngine.Pdfium;
 
             PdfOknoPodlgadu.Load("gisnet.pdf");
 
@@ -161,7 +168,6 @@ namespace DowodyZmian
                 Plik aktualnyPlik = ListaWczytanychPlikow[ListBoxPliki.SelectedIndex];
 
                 PdfOknoPodlgadu.Load(aktualnyPlik.PelnaSciezka);
-
                 if (!string.IsNullOrEmpty(NumerAktualnejZmiany) && string.IsNullOrEmpty(aktualnyPlik.NowaNazwaPliku))
                 {
                     aktualnyPlik.NowaNazwaPliku = NumerAktualnejZmiany + "_" + aktualnyPlik.NazwaPliku;
