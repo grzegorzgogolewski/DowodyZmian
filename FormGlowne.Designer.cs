@@ -33,18 +33,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGlowne));
             Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings textSearchSettings1 = new Syncfusion.Windows.Forms.PdfViewer.TextSearchSettings();
             this.GroupBoxView = new System.Windows.Forms.GroupBox();
+            this.PdfOknoPodlgadu = new Syncfusion.Windows.Forms.PdfViewer.PdfViewerControl();
             this.GroupBoxList = new System.Windows.Forms.GroupBox();
             this.ListBoxPliki = new System.Windows.Forms.ListBox();
             this.StatusStripMain = new System.Windows.Forms.StatusStrip();
             this.PasekStatusu = new System.Windows.Forms.ToolStripStatusLabel();
             this.GroupBoxPrzyciski = new System.Windows.Forms.GroupBox();
-            this.sfButton1 = new Syncfusion.WinForms.Controls.SfButton();
             this.ButtonKonwersja = new System.Windows.Forms.Button();
             this.LabelNumerZmiany = new System.Windows.Forms.Label();
             this.TextBoxZmiana = new System.Windows.Forms.TextBox();
             this.ButtonWskazPliki = new System.Windows.Forms.Button();
             this.ButtonWybierzFolder = new System.Windows.Forms.Button();
-            this.PdfOknoPodlgadu = new Syncfusion.Windows.Forms.PdfViewer.PdfViewerControl();
             this.GroupBoxView.SuspendLayout();
             this.GroupBoxList.SuspendLayout();
             this.StatusStripMain.SuspendLayout();
@@ -63,6 +62,50 @@
             this.GroupBoxView.TabIndex = 0;
             this.GroupBoxView.TabStop = false;
             this.GroupBoxView.Text = "GroupBoxView";
+            // 
+            // PdfOknoPodlgadu
+            // 
+            this.PdfOknoPodlgadu.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.PdfOknoPodlgadu.CursorMode = Syncfusion.Windows.Forms.PdfViewer.PdfViewerCursorMode.HandTool;
+            this.PdfOknoPodlgadu.EnableContextMenu = false;
+            this.PdfOknoPodlgadu.EnableNotificationBar = false;
+            this.PdfOknoPodlgadu.HorizontalScrollOffset = 0;
+            this.PdfOknoPodlgadu.IsBookmarkEnabled = false;
+            this.PdfOknoPodlgadu.IsTextSearchEnabled = false;
+            this.PdfOknoPodlgadu.IsTextSelectionEnabled = false;
+            this.PdfOknoPodlgadu.Location = new System.Drawing.Point(7, 20);
+            messageBoxSettings1.EnableNotification = true;
+            this.PdfOknoPodlgadu.MessageBoxSettings = messageBoxSettings1;
+            this.PdfOknoPodlgadu.MinimumZoomPercentage = 50;
+            this.PdfOknoPodlgadu.Name = "PdfOknoPodlgadu";
+            this.PdfOknoPodlgadu.PageBorderThickness = 0;
+            pdfViewerPrinterSettings1.Copies = 1;
+            pdfViewerPrinterSettings1.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
+            pdfViewerPrinterSettings1.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
+            pdfViewerPrinterSettings1.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings1.PrintLocation")));
+            pdfViewerPrinterSettings1.ShowPrintStatusDialog = true;
+            this.PdfOknoPodlgadu.PrinterSettings = pdfViewerPrinterSettings1;
+            this.PdfOknoPodlgadu.ReferencePath = null;
+            this.PdfOknoPodlgadu.ScrollDisplacementValue = 0;
+            this.PdfOknoPodlgadu.ShowHorizontalScrollBar = false;
+            this.PdfOknoPodlgadu.ShowToolBar = true;
+            this.PdfOknoPodlgadu.ShowVerticalScrollBar = false;
+            this.PdfOknoPodlgadu.Size = new System.Drawing.Size(599, 617);
+            this.PdfOknoPodlgadu.SpaceBetweenPages = 0;
+            this.PdfOknoPodlgadu.TabIndex = 0;
+            this.PdfOknoPodlgadu.TabStop = false;
+            this.PdfOknoPodlgadu.Text = "PdfOknoPodlgadu";
+            textSearchSettings1.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
+            textSearchSettings1.HighlightAllInstance = true;
+            textSearchSettings1.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
+            this.PdfOknoPodlgadu.TextSearchSettings = textSearchSettings1;
+            this.PdfOknoPodlgadu.ThemeName = "Office2016Colorful";
+            this.PdfOknoPodlgadu.VerticalScrollOffset = 0;
+            this.PdfOknoPodlgadu.VisualStyle = Syncfusion.Windows.Forms.PdfViewer.VisualStyle.Office2016Colorful;
+            this.PdfOknoPodlgadu.ZoomMode = Syncfusion.Windows.Forms.PdfViewer.ZoomMode.Default;
+            this.PdfOknoPodlgadu.DocumentLoaded += new Syncfusion.Windows.Forms.PdfViewer.PdfViewerControl.DocumentLoadedEventHandler(this.PdfOknoPodlgadu_DocumentLoaded);
             // 
             // GroupBoxList
             // 
@@ -111,7 +154,6 @@
             // GroupBoxPrzyciski
             // 
             this.GroupBoxPrzyciski.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.GroupBoxPrzyciski.Controls.Add(this.sfButton1);
             this.GroupBoxPrzyciski.Controls.Add(this.ButtonKonwersja);
             this.GroupBoxPrzyciski.Controls.Add(this.LabelNumerZmiany);
             this.GroupBoxPrzyciski.Controls.Add(this.TextBoxZmiana);
@@ -123,16 +165,6 @@
             this.GroupBoxPrzyciski.TabIndex = 3;
             this.GroupBoxPrzyciski.TabStop = false;
             this.GroupBoxPrzyciski.Text = "GroupBoxPrzyciski";
-            // 
-            // sfButton1
-            // 
-            this.sfButton1.AccessibleName = "Button";
-            this.sfButton1.Font = new System.Drawing.Font("Segoe UI Semibold", 9F);
-            this.sfButton1.Location = new System.Drawing.Point(252, 82);
-            this.sfButton1.Name = "sfButton1";
-            this.sfButton1.Size = new System.Drawing.Size(96, 28);
-            this.sfButton1.TabIndex = 5;
-            this.sfButton1.Text = "sfButton1";
             // 
             // ButtonKonwersja
             // 
@@ -194,51 +226,6 @@
             this.ButtonWybierzFolder.UseVisualStyleBackColor = true;
             this.ButtonWybierzFolder.Click += new System.EventHandler(this.ButtonPliki_Click);
             // 
-            // PdfOknoPodlgadu
-            // 
-            this.PdfOknoPodlgadu.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.PdfOknoPodlgadu.CanApplyTheme = false;
-            this.PdfOknoPodlgadu.CursorMode = Syncfusion.Windows.Forms.PdfViewer.PdfViewerCursorMode.HandTool;
-            this.PdfOknoPodlgadu.EnableContextMenu = false;
-            this.PdfOknoPodlgadu.EnableNotificationBar = false;
-            this.PdfOknoPodlgadu.HorizontalScrollOffset = 0;
-            this.PdfOknoPodlgadu.IsBookmarkEnabled = false;
-            this.PdfOknoPodlgadu.IsTextSearchEnabled = false;
-            this.PdfOknoPodlgadu.IsTextSelectionEnabled = false;
-            this.PdfOknoPodlgadu.Location = new System.Drawing.Point(7, 20);
-            messageBoxSettings1.EnableNotification = true;
-            this.PdfOknoPodlgadu.MessageBoxSettings = messageBoxSettings1;
-            this.PdfOknoPodlgadu.MinimumZoomPercentage = 50;
-            this.PdfOknoPodlgadu.Name = "PdfOknoPodlgadu";
-            this.PdfOknoPodlgadu.PageBorderThickness = 1;
-            pdfViewerPrinterSettings1.Copies = 1;
-            pdfViewerPrinterSettings1.PageOrientation = Syncfusion.Windows.PdfViewer.PdfViewerPrintOrientation.Auto;
-            pdfViewerPrinterSettings1.PageSize = Syncfusion.Windows.PdfViewer.PdfViewerPrintSize.ActualSize;
-            pdfViewerPrinterSettings1.PrintLocation = ((System.Drawing.PointF)(resources.GetObject("pdfViewerPrinterSettings1.PrintLocation")));
-            pdfViewerPrinterSettings1.ShowPrintStatusDialog = true;
-            this.PdfOknoPodlgadu.PrinterSettings = pdfViewerPrinterSettings1;
-            this.PdfOknoPodlgadu.ReferencePath = null;
-            this.PdfOknoPodlgadu.ScrollDisplacementValue = 0;
-            this.PdfOknoPodlgadu.ShowHorizontalScrollBar = false;
-            this.PdfOknoPodlgadu.ShowToolBar = true;
-            this.PdfOknoPodlgadu.ShowVerticalScrollBar = false;
-            this.PdfOknoPodlgadu.Size = new System.Drawing.Size(599, 617);
-            this.PdfOknoPodlgadu.SpaceBetweenPages = 8;
-            this.PdfOknoPodlgadu.TabIndex = 0;
-            this.PdfOknoPodlgadu.TabStop = false;
-            this.PdfOknoPodlgadu.Text = "PdfOknoPodlgadu";
-            textSearchSettings1.CurrentInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(255)))), ((int)(((byte)(171)))), ((int)(((byte)(64)))));
-            textSearchSettings1.HighlightAllInstance = true;
-            textSearchSettings1.OtherInstanceColor = System.Drawing.Color.FromArgb(((int)(((byte)(127)))), ((int)(((byte)(254)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))));
-            this.PdfOknoPodlgadu.TextSearchSettings = textSearchSettings1;
-            this.PdfOknoPodlgadu.ThemeName = "Default";
-            this.PdfOknoPodlgadu.VerticalScrollOffset = 0;
-            this.PdfOknoPodlgadu.VisualStyle = Syncfusion.Windows.Forms.PdfViewer.VisualStyle.Default;
-            this.PdfOknoPodlgadu.ZoomMode = Syncfusion.Windows.Forms.PdfViewer.ZoomMode.FitPage;
-            this.PdfOknoPodlgadu.DocumentLoaded += new Syncfusion.Windows.Forms.PdfViewer.PdfViewerControl.DocumentLoadedEventHandler(this.PdfOknoPodlgadu_DocumentLoaded);
-            // 
             // FormGlowne
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -279,7 +266,6 @@
         private System.Windows.Forms.Label LabelNumerZmiany;
         private System.Windows.Forms.ListBox ListBoxPliki;
         private System.Windows.Forms.Button ButtonKonwersja;
-        private Syncfusion.WinForms.Controls.SfButton sfButton1;
         private Syncfusion.Windows.Forms.PdfViewer.PdfViewerControl PdfOknoPodlgadu;
     }
 }

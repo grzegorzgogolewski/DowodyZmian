@@ -12,7 +12,7 @@ namespace DowodyZmian
         static void Main()
         {
             //Register Syncfusion license
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NzE3MzY0QDMyMzAyZTMyMmUzMGpRUDB2U0tZTFV0Tlp6STBSZDYraVVUWkM1Y3Avd0Y1ZDVsY1I1Umc3VEk9");
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NzYxMjk3QDMyMzAyZTMzMmUzMG0zQVpHR1dyQVdmblBZTGJGRm1vdTU1R1ZtLzJMWDBiTWxiSll5K1JGVzA9");
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

@@ -4,7 +4,9 @@ using System.Windows.Forms;
 using Syncfusion.Windows.Forms.PdfViewer;
 using System.IO;
 using System.Linq;
+using Syncfusion.Pdf;
 using static DowodyZmian.ZmienneGlobalne;
+using Syncfusion.Pdf.Parsing;
 
 namespace DowodyZmian
 {
@@ -13,14 +15,6 @@ namespace DowodyZmian
         public FormGlowne()
         {
             InitializeComponent();
-
-            //Add below codes in Form constructor for avoid form flickering.
- 
-            int style = NativeWinAPI.GetWindowLong(this.Handle, NativeWinAPI.GWL_EXSTYLE); 
- 
-            style |= NativeWinAPI.WS_EX_COMPOSITED; 
- 
-            NativeWinAPI.SetWindowLong(this.Handle, NativeWinAPI.GWL_EXSTYLE, style); 
         }
 
         private void FormGlowne_Shown(object sender, EventArgs e)
@@ -168,6 +162,8 @@ namespace DowodyZmian
                 Plik aktualnyPlik = ListaWczytanychPlikow[ListBoxPliki.SelectedIndex];
 
                 PdfOknoPodlgadu.Load(aktualnyPlik.PelnaSciezka);
+
+
                 if (!string.IsNullOrEmpty(NumerAktualnejZmiany) && string.IsNullOrEmpty(aktualnyPlik.NowaNazwaPliku))
                 {
                     aktualnyPlik.NowaNazwaPliku = NumerAktualnejZmiany + "_" + aktualnyPlik.NazwaPliku;
@@ -186,10 +182,85 @@ namespace DowodyZmian
 
         private void ListBoxPliki_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F2 || e.KeyCode == Keys.Enter)
+            Plik aktualnyPlik;
+
+            PdfLoadedDocument loadedDocument;
+
+            switch (e.KeyCode)
             {
-                TextBoxZmiana.SelectAll();
-                TextBoxZmiana.Focus();
+                case Keys.F2:
+                case Keys.Enter:
+
+                    TextBoxZmiana.SelectAll();
+                    TextBoxZmiana.Focus();
+
+                    e.Handled = true;
+                    
+                    break;
+
+                case Keys.Left:
+
+                    aktualnyPlik = ListaWczytanychPlikow[ListBoxPliki.SelectedIndex];
+
+                    loadedDocument = new PdfLoadedDocument(aktualnyPlik.PelnaSciezka);
+
+                    switch (loadedDocument.Pages[0].Rotation)
+                    {
+                        case PdfPageRotateAngle.RotateAngle0:
+                            loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle270;
+                            break;
+                        case PdfPageRotateAngle.RotateAngle90:
+                            loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle0;
+                            break;
+                        case PdfPageRotateAngle.RotateAngle180:
+                            loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle90;
+                            break;
+                        case PdfPageRotateAngle.RotateAngle270:
+                            loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle180;
+                            break;
+                    }
+
+                    loadedDocument.Save(aktualnyPlik.PelnaSciezka);
+
+                    loadedDocument.Close(true);
+
+                    PdfOknoPodlgadu.Load(aktualnyPlik.PelnaSciezka);
+
+                    e.Handled = true;
+
+                    break;
+
+                case Keys.Right:
+
+                    aktualnyPlik = ListaWczytanychPlikow[ListBoxPliki.SelectedIndex];
+
+                    loadedDocument = new PdfLoadedDocument(aktualnyPlik.PelnaSciezka);
+
+                    switch (loadedDocument.Pages[0].Rotation)
+                    {
+                        case PdfPageRotateAngle.RotateAngle0:
+                            loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle90;
+                            break;
+                        case PdfPageRotateAngle.RotateAngle90:
+                            loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle180;
+                            break;
+                        case PdfPageRotateAngle.RotateAngle180:
+                            loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle270;
+                            break;
+                        case PdfPageRotateAngle.RotateAngle270:
+                            loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle0;
+                            break;
+                    }
+
+                    loadedDocument.Save(aktualnyPlik.PelnaSciezka);
+
+                    loadedDocument.Close(true);
+
+                    PdfOknoPodlgadu.Load(aktualnyPlik.PelnaSciezka);
+
+                    e.Handled = true;
+
+                    break;
             }
         }
 
