@@ -78,7 +78,7 @@
             this.PdfOknoPodlgadu.Location = new System.Drawing.Point(7, 20);
             messageBoxSettings1.EnableNotification = true;
             this.PdfOknoPodlgadu.MessageBoxSettings = messageBoxSettings1;
-            this.PdfOknoPodlgadu.MinimumZoomPercentage = 50;
+            this.PdfOknoPodlgadu.MinimumZoomPercentage = 10;
             this.PdfOknoPodlgadu.Name = "PdfOknoPodlgadu";
             this.PdfOknoPodlgadu.PageBorderThickness = 0;
             pdfViewerPrinterSettings1.Copies = 1;
@@ -89,9 +89,9 @@
             this.PdfOknoPodlgadu.PrinterSettings = pdfViewerPrinterSettings1;
             this.PdfOknoPodlgadu.ReferencePath = null;
             this.PdfOknoPodlgadu.ScrollDisplacementValue = 0;
-            this.PdfOknoPodlgadu.ShowHorizontalScrollBar = false;
+            this.PdfOknoPodlgadu.ShowHorizontalScrollBar = true;
             this.PdfOknoPodlgadu.ShowToolBar = true;
-            this.PdfOknoPodlgadu.ShowVerticalScrollBar = false;
+            this.PdfOknoPodlgadu.ShowVerticalScrollBar = true;
             this.PdfOknoPodlgadu.Size = new System.Drawing.Size(599, 617);
             this.PdfOknoPodlgadu.SpaceBetweenPages = 0;
             this.PdfOknoPodlgadu.TabIndex = 0;
@@ -104,7 +104,7 @@
             this.PdfOknoPodlgadu.ThemeName = "Office2016Colorful";
             this.PdfOknoPodlgadu.VerticalScrollOffset = 0;
             this.PdfOknoPodlgadu.VisualStyle = Syncfusion.Windows.Forms.PdfViewer.VisualStyle.Office2016Colorful;
-            this.PdfOknoPodlgadu.ZoomMode = Syncfusion.Windows.Forms.PdfViewer.ZoomMode.Default;
+            this.PdfOknoPodlgadu.ZoomMode = Syncfusion.Windows.Forms.PdfViewer.ZoomMode.FitPage;
             this.PdfOknoPodlgadu.DocumentLoaded += new Syncfusion.Windows.Forms.PdfViewer.PdfViewerControl.DocumentLoadedEventHandler(this.PdfOknoPodlgadu_DocumentLoaded);
             // 
             // GroupBoxList

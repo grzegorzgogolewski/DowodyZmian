@@ -1,7 +1,6 @@
 ﻿using License;
 using System;
 using System.Windows.Forms;
-using Syncfusion.Windows.Forms.PdfViewer;
 using System.IO;
 using System.Linq;
 using Syncfusion.Pdf;
@@ -60,8 +59,6 @@ namespace DowodyZmian
             PdfOknoPodlgadu.ToolbarSettings.OpenButton.IsVisible = false;
             PdfOknoPodlgadu.ToolbarSettings.SaveButton.IsVisible = false;
             PdfOknoPodlgadu.ToolbarSettings.PrintButton.IsVisible = false;
-
-            PdfOknoPodlgadu.RenderingEngine = PdfRenderingEngine.Pdfium;
 
             PdfOknoPodlgadu.Load("gisnet.pdf");
 
@@ -161,9 +158,30 @@ namespace DowodyZmian
             {
                 Plik aktualnyPlik = ListaWczytanychPlikow[ListBoxPliki.SelectedIndex];
 
-                PdfOknoPodlgadu.Load(aktualnyPlik.PelnaSciezka);
+                PdfLoadedDocument pdfWczytanyDokument = new PdfLoadedDocument(aktualnyPlik.PelnaSciezka);
 
+                PdfDocument pdfNowyDokument = new PdfDocument();
 
+                pdfNowyDokument.PageSettings.Margins.All = 0;
+
+                if (pdfWczytanyDokument.Pages[0].Size.Width > pdfWczytanyDokument.Pages[0].Size.Height)
+                {
+                    pdfNowyDokument.PageSettings.Orientation = PdfPageOrientation.Landscape;
+                }
+
+                pdfNowyDokument.PageSettings.Rotate = (int)pdfWczytanyDokument.Pages[0].Rotation == 5 ? PdfPageRotateAngle.RotateAngle90 : pdfWczytanyDokument.Pages[0].Rotation;
+
+                pdfNowyDokument.ImportPageRange(pdfWczytanyDokument, 0, pdfWczytanyDokument.Pages.Count - 1);
+
+                MemoryStream memoryStream = new MemoryStream();
+                pdfNowyDokument.Save(memoryStream);
+
+                pdfNowyDokument.Close(true);
+
+                pdfWczytanyDokument.Close(true);
+
+                PdfOknoPodlgadu.Load(memoryStream);
+                
                 if (!string.IsNullOrEmpty(NumerAktualnejZmiany) && string.IsNullOrEmpty(aktualnyPlik.NowaNazwaPliku))
                 {
                     aktualnyPlik.NowaNazwaPliku = NumerAktualnejZmiany + "_" + aktualnyPlik.NazwaPliku;
@@ -204,20 +222,23 @@ namespace DowodyZmian
 
                     loadedDocument = new PdfLoadedDocument(aktualnyPlik.PelnaSciezka);
 
-                    switch (loadedDocument.Pages[0].Rotation)
+                    switch ((int)loadedDocument.Pages[0].Rotation)
                     {
-                        case PdfPageRotateAngle.RotateAngle0:
+                        case 0: // 0
                             loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle270;
                             break;
-                        case PdfPageRotateAngle.RotateAngle90:
+                        case 1: // 90
+                        case 5: // 90
                             loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle0;
                             break;
-                        case PdfPageRotateAngle.RotateAngle180:
+                        case 2: // 180
                             loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle90;
                             break;
-                        case PdfPageRotateAngle.RotateAngle270:
+                        case 3: // 270
                             loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle180;
                             break;
+                        default:
+                            throw new Exception($"Błedna wartość kąta obrotu: {loadedDocument.Pages[0].Rotation}");
                     }
 
                     loadedDocument.Save(aktualnyPlik.PelnaSciezka);
@@ -236,20 +257,23 @@ namespace DowodyZmian
 
                     loadedDocument = new PdfLoadedDocument(aktualnyPlik.PelnaSciezka);
 
-                    switch (loadedDocument.Pages[0].Rotation)
+                    switch ((int)loadedDocument.Pages[0].Rotation)
                     {
-                        case PdfPageRotateAngle.RotateAngle0:
+                        case 0:
                             loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle90;
                             break;
-                        case PdfPageRotateAngle.RotateAngle90:
+                        case 1:
+                        case 5:
                             loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle180;
                             break;
-                        case PdfPageRotateAngle.RotateAngle180:
+                        case 2:
                             loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle270;
                             break;
-                        case PdfPageRotateAngle.RotateAngle270:
+                        case 3:
                             loadedDocument.Pages[0].Rotation = PdfPageRotateAngle.RotateAngle0;
                             break;
+                        default:
+                            throw new Exception($"Błedna wartość kąta obrotu: {loadedDocument.Pages[0].Rotation}");
                     }
 
                     loadedDocument.Save(aktualnyPlik.PelnaSciezka);
